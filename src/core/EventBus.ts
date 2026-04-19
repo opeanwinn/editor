@@ -75,6 +75,14 @@ class EventBus {
   listenerCount(event: string): number {
     return this.listeners.get(event)?.size ?? 0;
   }
+
+  /**
+   * Returns a list of all event names that currently have active listeners.
+   * Handy for debugging — I kept forgetting which events were still live.
+   */
+  activeEvents(): string[] {
+    return [...this.listeners.keys()];
+  }
 }
 
 // Singleton instance shared across the editor
