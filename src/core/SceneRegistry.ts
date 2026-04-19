@@ -68,7 +68,9 @@ export class SceneRegistry {
     if (!existing) {
       throw new Error(`[SceneRegistry] Node "${id}" not found.`);
     }
-    const updated = { ...existing, ...patch, id };
+    // Prevent accidental type changes via patch — type should be immutable after creation.
+    const { type: _ignoredType, ...safePatch } = patch as Partial<SceneNode> & { type?: string };
+    const updated = { ...existing, ...safePatch, id };
     this.nodes.set(id, updated);
     this.bus.emit('node:updated', { node: updated });
   }
