@@ -47,13 +47,19 @@ class EventBus {
 
   /**
    * Emit an event, invoking all registered handlers synchronously.
+   * Note: errors in individual handlers are caught and logged so one
+   * bad handler doesn't silently kill the rest of the chain.
    */
   emit<T = unknown>(event: string, payload: T): void {
     const handlers = this.listeners.get(event);
     if (!handlers) return;
     // Snapshot to avoid mutation issues during iteration
     for (const handler of [...handlers]) {
-      handler(payload);
+      try {
+        handler(payload);
+      } catch (err) {
+        console.error(`[EventBus] Error in handler for "${event}":`, err);
+      }
     }
   }
 
