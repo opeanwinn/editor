@@ -58,6 +58,7 @@ class EventBus {
       try {
         handler(payload);
       } catch (err) {
+        // TODO: consider wiring this into a proper logger at some point
         console.error(`[EventBus] Error in handler for "${event}":`, err);
       }
     }
@@ -88,6 +89,14 @@ class EventBus {
    */
   activeEvents(): string[] {
     return [...this.listeners.keys()];
+  }
+
+  /**
+   * Returns true if there is at least one handler registered for the given event.
+   * Tiny helper I added because I was writing `listenerCount(e) > 0` everywhere.
+   */
+  hasListeners(event: string): boolean {
+    return (this.listeners.get(event)?.size ?? 0) > 0;
   }
 }
 
