@@ -33,8 +33,10 @@ export class LayerManager {
     }
     this.layers.delete(id);
     if (this._activeLayerId === id) {
+      // Pick the topmost remaining layer (highest zIndex) as the new active layer,
+      // rather than the bottom one — feels more natural when deleting the active layer.
       const remaining = this.getLayersOrdered();
-      this._activeLayerId = remaining.length > 0 ? remaining[0].id : null;
+      this._activeLayerId = remaining.length > 0 ? remaining[remaining.length - 1].id : null;
     }
   }
 
