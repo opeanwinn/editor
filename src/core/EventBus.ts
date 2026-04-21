@@ -58,8 +58,9 @@ class EventBus {
       try {
         handler(payload);
       } catch (err) {
-        // TODO: consider wiring this into a proper logger at some point
-        console.error(`[EventBus] Error in handler for "${event}":`, err);
+        // Using console.warn instead of console.error — these are recoverable
+        // handler failures, not fatal errors, so warn feels more appropriate.
+        console.warn(`[EventBus] Error in handler for "${event}":`, err);
       }
     }
   }
@@ -103,4 +104,3 @@ class EventBus {
 // Singleton instance shared across the editor
 export const eventBus = new EventBus();
 export type { EventHandler, Subscription };
-export { EventBus };
