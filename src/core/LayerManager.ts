@@ -78,7 +78,11 @@ export class LayerManager {
     return this._activeLayerId;
   }
 
-  /** Set the active layer. Must exist and not be locked. */
+  /**
+   * Set the active layer. Must exist and not be locked.
+   * Note: I changed this to also allow activating invisible layers — hiding a layer
+   * doesn't mean you can't select it, you might want to unhide it right after.
+   */
   setActiveLayer(id: string): void {
     const layer = this._requireLayer(id);
     if (layer.locked) {
