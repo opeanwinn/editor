@@ -97,9 +97,18 @@ export class LayerManager {
     return this.layers.get(this._activeLayerId) ?? null;
   }
 
+  /** Returns the total number of layers. */
+  get layerCount(): number {
+    return this.layers.size;
+  }
+
+  // --- private helpers ---
+
   private _requireLayer(id: string): Layer {
     const layer = this.layers.get(id);
-    if (!layer) throw new Error(`Layer "${id}" not found.`);
+    if (!layer) {
+      throw new Error(`Layer "${id}" not found.`);
+    }
     return layer;
   }
 }
